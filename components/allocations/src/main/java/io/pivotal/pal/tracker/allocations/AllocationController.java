@@ -1,5 +1,6 @@
 package io.pivotal.pal.tracker.allocations;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.pivotal.pal.tracker.allocations.data.AllocationDataGateway;
 import io.pivotal.pal.tracker.allocations.data.AllocationFields;
 import io.pivotal.pal.tracker.allocations.data.AllocationRecord;
@@ -47,6 +48,7 @@ public class AllocationController {
     }
 
 
+    @HystrixCommand(fallbackMethod = "getProjectFromCache")
     private boolean projectIsActive(long projectId) {
         ProjectInfo project = client.getProject(projectId);
 
