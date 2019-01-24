@@ -19,10 +19,12 @@ jobs:
         mariadb: '10.2'
       install: skip
       before_script:
+        - "export JAVA_OPTS=-Xmx1g"
         - mysql -uroot < databases/create_databases.sql
         - ./gradlew testMigrate
       script: ./gradlew clean build
       before_deploy:
+        - "export JAVA_OPTS=-Xmx1g"
         - git config --local user.name "Travis CI"
         - git config --local user.email "travis@example.com"
         - git tag -f $RELEASE_TAG
@@ -38,9 +40,11 @@ jobs:
     - stage: deploy
       language: java
       script:
+        - "export JAVA_OPTS=-Xmx1g"
         - echo "Downloading allocations server $RELEASE_TAG"
         - wget -P applications/allocations-server/build/libs https://github.com/$GITHUB_USERNAME/pal-tracker-distributed/releases/download/$RELEASE_TAG/allocations-server.jar
       before_deploy:
+        - "export JAVA_OPTS=-Xmx1g"
         - cp manifest-allocations.yml manifest.yml
         - echo "Deploying allocations server $RELEASE_TAG"
       deploy: &cloudfoundry
@@ -53,9 +57,11 @@ jobs:
     - stage: deploy
       language: bash
       script:
+        - "export JAVA_OPTS=-Xmx1g"
         - echo "Downloading backlog server $RELEASE_TAG"
         - wget -P applications/backlog-server/build/libs https://github.com/$GITHUB_USERNAME/pal-tracker-distributed/releases/download/$RELEASE_TAG/backlog-server.jar
       before_deploy:
+        - "export JAVA_OPTS=-Xmx1g"
         - cp manifest-backlog.yml manifest.yml
         - echo "Deploying backlog server $RELEASE_TAG"
       deploy:
@@ -63,9 +69,11 @@ jobs:
     - stage: deploy
       language: bash
       script:
+        - "export JAVA_OPTS=-Xmx1g"
         - echo "Downloading registration server $RELEASE_TAG"
         - wget -P applications/registration-server/build/libs https://github.com/$GITHUB_USERNAME/pal-tracker-distributed/releases/download/$RELEASE_TAG/registration-server.jar
       before_deploy:
+        - "export JAVA_OPTS=-Xmx1g"
         - cp manifest-registration.yml manifest.yml
         - echo "Deploying registration server $RELEASE_TAG"
       deploy:
@@ -73,9 +81,11 @@ jobs:
     - stage: deploy
       language: bash
       script:
+        - "export JAVA_OPTS=-Xmx1g"
         - echo "Downloading timesheets server $RELEASE_TAG"
         - wget -P applications/timesheets-server/build/libs https://github.com/$GITHUB_USERNAME/pal-tracker-distributed/releases/download/$RELEASE_TAG/timesheets-server.jar
       before_deploy:
+        - "export JAVA_OPTS=-Xmx1g"
         - cp manifest-timesheets.yml manifest.yml
         - echo "Deploying timesheets server $RELEASE_TAG"
       deploy:
